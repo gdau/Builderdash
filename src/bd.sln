@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Builderdash", "Builderdash\Builderdash.csproj", "{27978836-1FC3-4F25-9A32-C7F880CE85F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Builderdash.Master", "Builderdash.Master\Builderdash.Master.csproj", "{5137A202-549E-4E98-BFFD-AAF36F9598E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Builderdash.Agent", "Builderdash.Agent\Builderdash.Agent.csproj", "{C25BCD4E-6BFB-4DEC-8668-74D544376D35}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27978836-1FC3-4F25-9A32-C7F880CE85F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27978836-1FC3-4F25-9A32-C7F880CE85F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27978836-1FC3-4F25-9A32-C7F880CE85F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27978836-1FC3-4F25-9A32-C7F880CE85F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5137A202-549E-4E98-BFFD-AAF36F9598E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5137A202-549E-4E98-BFFD-AAF36F9598E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5137A202-549E-4E98-BFFD-AAF36F9598E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5137A202-549E-4E98-BFFD-AAF36F9598E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C25BCD4E-6BFB-4DEC-8668-74D544376D35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C25BCD4E-6BFB-4DEC-8668-74D544376D35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C25BCD4E-6BFB-4DEC-8668-74D544376D35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C25BCD4E-6BFB-4DEC-8668-74D544376D35}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -16,95 +16,77 @@ namespace Builderdash
         private readonly ServerMode _serverMode;
         private readonly Uri _uri;
         private readonly static TraceSource Trace = new TraceSource("bd.master.server");
+        private readonly string _certificatePemFile;
+        private ServiceHost _serviceHost;
 
-        public MasterServer(ServerMode serverMode, string address, int port)
+        public MasterServer(MasterConfiguration configuration)
         {
-            _serverMode = serverMode;
-            _uri = new UriBuilder("net.tcp", address, port).Uri;
+            _serverMode = configuration.Mode;
+            _uri = new UriBuilder("net.tcp", configuration.Server.Address, configuration.Server.Port).Uri;
+            _certificatePemFile = configuration.CertificatePemFile;
         }
 
         public void Start()
         {
-            Console.Title = "Server";
+            Console.Title = "bd.master.server";
 
-            ServiceHost svc;
-
-            if(_serverMode == ServerMode.Open)
-            {
-                svc = GetSvcLoose();
-            }
-            else
-            {
-                svc = GetSvc();
-            }
-            svc.Open();
+            _serviceHost = GetServiceHost(_serverMode);
+            _serviceHost.Open();
 
             Trace.Information("Accepting requests in {0} mode on {1}", _serverMode.ToString().ToLower(), _uri);
         }
 
-        private ServiceHost GetSvc()
+        private ServiceHost GetServiceHost(ServerMode serverMode)
         {
-            ServiceHost svc = new ServiceHost(new JobServiceService(), _uri);
+            ServiceHost serviceHost = new ServiceHost(new JobServiceService(), _uri);
+            NetTcpBinding binding = serverMode == ServerMode.Secure
+                                        ? GetSecureBinding()
+                                        : GetBinding();
 
-            X509Certificate2 cert = new X509Certificate2();
-            cert.LoadFromPemFile(@"c:\\castore\cn1.pem");
+            SetCertificateOptions(serviceHost);
 
-            svc.Credentials.ServiceCertificate.Certificate = cert;
+            serviceHost.AddServiceEndpoint(typeof(IJobService), binding, "master");
+            serviceHost.AddServiceEndpoint(typeof(ITest2), binding, "authreq");
 
-            //            svc.Credentials.ClientCertificate.Authentication.CertificateValidationMode =
-            //                X509CertificateValidationMode.ChainTrust;
+            return serviceHost;
+        }
 
-            svc.Credentials.ClientCertificate.Authentication.CertificateValidationMode =
+        private NetTcpBinding GetSecureBinding()
+        {
+            NetTcpBinding binding = new NetTcpBinding(SecurityMode.Transport);
+
+            binding.Security.Transport.ProtectionLevel = ProtectionLevel.EncryptAndSign;
+            binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
+
+            return binding;
+        }
+
+        private void SetCertificateOptions(ServiceHost serviceHost)
+        {
+            X509Certificate2 certificate = new X509Certificate2().
+                LoadFromPemFile(_certificatePemFile);
+
+            serviceHost.Credentials.ServiceCertificate.Certificate = certificate;
+            serviceHost.Credentials.ClientCertificate.Authentication.CertificateValidationMode =
                 X509CertificateValidationMode.Custom;
-            svc.Credentials.ClientCertificate.Authentication.CustomCertificateValidator =
+            serviceHost.Credentials.ClientCertificate.Authentication.CustomCertificateValidator =
                 new ServerX509CertificateValidator();
-
-            svc.Credentials.ClientCertificate.Authentication.RevocationMode =
+            serviceHost.Credentials.ClientCertificate.Authentication.RevocationMode =
                 X509RevocationMode.NoCheck;
-
-            svc.AddServiceEndpoint(typeof(IJobService), GetTcpBinding(TcpClientCredentialType.Certificate), "master");
-
-            svc.AddServiceEndpoint(typeof(ITest2), GetTcpBinding(TcpClientCredentialType.None), "authreq");
-            
-            return svc;
-        }
-        
-        private ServiceHost GetSvcLoose()
-        {
-            ServiceHost svc = new ServiceHost(new JobServiceService(), _uri);
-
-            svc.AddServiceEndpoint(typeof(IJobService), GetTcpBindingLoose(TcpClientCredentialType.Certificate), "master");
-            svc.AddServiceEndpoint(typeof(ITest2), GetTcpBindingLoose(TcpClientCredentialType.None), "authreq");
-            
-            return svc;
         }
 
-        private static NetTcpBinding GetTcpBinding(TcpClientCredentialType tcpClientCredentialType)
+        private static NetTcpBinding GetBinding()
         {
-            NetTcpBinding tcpBinding = new NetTcpBinding();
-
-            tcpBinding.Security.Mode = SecurityMode.Transport;
-
-            tcpBinding.Security.Transport.ProtectionLevel = ProtectionLevel.EncryptAndSign;
-
-            tcpBinding.Security.Transport.ClientCredentialType = tcpClientCredentialType;
-            return tcpBinding;
-        }
-        
-        private static NetTcpBinding GetTcpBindingLoose(TcpClientCredentialType tcpClientCredentialType)
-        {
-            NetTcpBinding tcpBinding = new NetTcpBinding();
-
-            tcpBinding.Security.Mode = SecurityMode.None;
-            //tcpBinding.Security.Transport.ProtectionLevel = ProtectionLevel.None;
-            //tcpBinding.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
-            
-            return tcpBinding;
+            return new NetTcpBinding(SecurityMode.None);
         }
 
         public void Stop()
         {
-            Console.WriteLine("stopped");
+            if(_serviceHost != null && 
+                _serviceHost.State == CommunicationState.Opened)
+            _serviceHost.Close();
+            
+            Trace.Information("Stopped");
         }
     }
 }

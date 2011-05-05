@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Configuration;
-using Builderdash.Configuration;
 
-namespace Builderdash.Master.Configuration
+namespace Builderdash.Configuration
 {
     public class MasterConfiguration : ConfigurationSection
     {
@@ -24,6 +23,19 @@ namespace Builderdash.Master.Configuration
             set
             {
                 this["listen"] = value;
+            }
+        }
+
+        [ConfigurationProperty("certificatePemFile")]
+        public string CertificatePemFile
+        {
+            get
+            {
+                return (string)this["certificatePemFile"];
+            }
+            set
+            {
+                this["certificatePemFile"] = value;
             }
         }
 

@@ -20,8 +20,6 @@ namespace Builderdash.Master
 
         public CommandSet()
         {
-
-
 //            var skinnyUdpServer = new UdpDaemon(msg =>
 //            {
 //                Trace.WriteLine("Got udp message..");
@@ -48,11 +46,13 @@ namespace Builderdash.Master
         [Command]
         public void Service(bool start, bool install, bool uninstall)
         {
-            var windowsService = new WindowsService(_comboDaemon, 
-                new WindowsServiceConfiguration("au")
-                    {
-                        CommandLineArguments = "service --start"
-                    });
+            var windowsService = new WindowsService("bdmaster", _comboDaemon,
+                                                    c =>
+                                                        {
+                                                            c.Description = "Builderdash Master Server";
+                                                            c.DisplayName = "Builderdash Master";
+                                                            c.CommandLineArguments = "service --start";
+                                                        });
 
             if (install) windowsService.Install();
             if (uninstall) windowsService.Uninstall();

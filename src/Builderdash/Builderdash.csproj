@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto">
+      <HintPath>..\..\lib\bouncycastle\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="Synoptic, Version=0.1.0.10116, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\synoptic\Synoptic.dll</HintPath>
@@ -44,6 +47,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -70,6 +74,8 @@
     <Compile Include="MasterServer.cs" />
     <Compile Include="ServiceUpdater.cs" />
     <Compile Include="JobServiceService.cs" />
+    <Compile Include="Utils.cs" />
+    <Compile Include="X509\CertificateAuthority.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

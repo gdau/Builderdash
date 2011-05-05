@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
 using Builderdash.Configuration;
+using Builderdash.X509;
 using Synoptic;
 using Synoptic.Service;
 using WcfShared;
@@ -108,6 +110,22 @@ namespace Builderdash.Master
                 //                Console.WriteLine("count: {0}/{1} - {2}", jobber.RunnigCount(), jobber.JobCount(), jobber.CompleteCount());
                 Thread.Sleep(100);
             }
+        }
+
+        [Command]
+        public void GenerateCa([CommandParameter(DefaultValue = "root")]string commonName)
+        {
+            string ca = new CertificateAuthority().GenerateCa("CN=" + commonName);
+            Console.WriteLine(ca);
+        }
+
+        [Command]
+        public void GenerateCert(
+            [CommandParameter(DefaultValue = "client")]string commonName,
+            [CommandParameter(DefaultValue = "root.crt")]string caPemFile)
+        {
+            string cert = new CertificateAuthority().GenerateCert("CN=" + commonName, File.ReadAllText(caPemFile));
+            Console.WriteLine(cert);
         }
     }
 }

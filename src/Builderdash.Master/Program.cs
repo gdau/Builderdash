@@ -7,17 +7,18 @@ namespace Builderdash.Master
 {
     public class Program
     {
+        private readonly static TraceSource Trace = new TraceSource("Builderdash");
+
         static void Main(string[] args)
         {
             try
             {
                 Console.Title = "bd.master.server";
-                Console.WriteLine(MasterConfiguration.Configuration.Mode);
                 new CommandRunner().Run(args);
             }
             catch (Exception e)
             {
-                Trace.WriteLine(e.ToString());
+                Trace.Error(e.ToString());
             }
         }
     }

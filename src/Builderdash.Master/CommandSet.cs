@@ -6,6 +6,8 @@ using System.Net;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
+using Builderdash.Configuration;
+using Builderdash.Master.Configuration;
 using Synoptic;
 using Synoptic.Service;
 using WcfShared;
@@ -37,7 +39,10 @@ namespace Builderdash.Master
 //                                                });
 
 
-            _comboDaemon = new ComboDaemon(new BmcServer());
+            _comboDaemon = new ComboDaemon(new MasterServer(
+                MasterConfiguration.Configuration.Mode, 
+                MasterConfiguration.Configuration.Server.Address, 
+                MasterConfiguration.Configuration.Server.Port));
         }
 
         [Command]

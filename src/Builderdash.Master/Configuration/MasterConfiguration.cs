@@ -4,12 +4,6 @@ using Builderdash.Configuration;
 
 namespace Builderdash.Master.Configuration
 {
-    public enum ServerMode
-    {
-        Secure,
-        Open
-    }
-
     public class MasterConfiguration : ConfigurationSection
     {
         private static readonly MasterConfiguration ConfigSection

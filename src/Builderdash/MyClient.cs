@@ -21,7 +21,7 @@ namespace Builderdash
             tcpBinding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
 
             //                tcpBinding.Security.Transport.ProtectionLevel = ProtectionLevel.EncryptAndSign;
-            string baseUri = @"net.tcp://localhost:55555/Test";
+            string baseUri = @"net.tcp://localhost:55555/master";
             //                string baseUri = @"net.tcp://train-web.kempstoncontrols.com:55555/Test";
             EndpointAddress addr = new EndpointAddress(new Uri(baseUri),
                                                        EndpointIdentity.CreateDnsIdentity("cn1"),
@@ -37,6 +37,18 @@ namespace Builderdash
             cert.LoadFromPemFile(Path.Combine(Environment.CurrentDirectory, "cert.pem"));
 
             factory.Credentials.ClientCertificate.Certificate = cert;
+
+            return factory.CreateChannel();
+        }        
+        
+        public IJobService GetLooseProxy()
+        {
+            NetTcpBinding tcpBinding = new NetTcpBinding();
+
+            tcpBinding.Security.Mode = SecurityMode.None;
+            string baseUri = @"net.tcp://localhost:55555/master";
+            ChannelFactory<IJobService> factory = new DuplexChannelFactory<IJobService>(new CallbackImpl(), tcpBinding, 
+                new EndpointAddress(baseUri));
 
             return factory.CreateChannel();
         }

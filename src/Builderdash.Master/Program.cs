@@ -3,7 +3,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using Builderdash.Master.Configuration;
+using Builderdash.Configuration;
 using Synoptic;
 
 namespace Builderdash.Master

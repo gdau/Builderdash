@@ -8,8 +8,6 @@ using Synoptic;
 
 namespace Builderdash.Master
 {
-
-
     public class Program
     {
         static void Main(string[] args)
@@ -17,11 +15,10 @@ namespace Builderdash.Master
             Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
             Trace.Listeners.Add(new TextWriterTraceListener(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "au.log")));
             Trace.AutoFlush = true;
-            
-            Console.WriteLine(MasterConfiguration.Configuration.Mode);
 
             try
             {
+                Console.WriteLine(MasterConfiguration.Configuration.Mode);
                 new CommandRunner().Run(args);
             }
             catch (Exception e)

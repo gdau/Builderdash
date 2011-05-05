@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CallbackImpl.cs" />
+    <Compile Include="Configuration\ClientConfiguration.cs" />
     <Compile Include="Configuration\MasterConfiguration.cs" />
     <Compile Include="Configuration\ServerConfigurationElement.cs" />
     <Compile Include="Configuration\ServerMode.cs" />

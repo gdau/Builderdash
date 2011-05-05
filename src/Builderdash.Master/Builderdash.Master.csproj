@@ -64,6 +64,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Content Include="app.xml" />
+    <None Include="master.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="master.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="trace.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration\" />

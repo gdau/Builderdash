@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           attributeFormDefault="unqualified" 
+           elementFormDefault="qualified" 
+           targetNamespace="http://tempuri.org/master.xsd" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="master">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="listen">
+          <xs:complexType>
+            <xs:attribute name="address" type="xs:string" use="required" />
+            <xs:attribute name="port" type="xs:unsignedShort" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="mode" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="open"></xs:enumeration>
+            <xs:enumeration value="secure"></xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+

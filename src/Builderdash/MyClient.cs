@@ -10,8 +10,14 @@ using X509Library;
 
 namespace Builderdash
 {
-    public class MyClient
+    public class ClientProxy
     {
+        public ClientProxy()
+        {
+            
+        }
+
+
         public IJobService GetProxy()
         {
             NetTcpBinding tcpBinding = new NetTcpBinding();

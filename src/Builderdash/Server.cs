@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
@@ -24,7 +25,14 @@ namespace Builderdash
         {
             _serverMode = configuration.Mode;
             _uri = new UriBuilder("net.tcp", configuration.Server.Address, configuration.Server.Port).Uri;
-            _certificatePemFile = configuration.CertificatePemFile;
+            
+            if (Path.IsPathRooted(configuration.CertificatePemFile))
+                _certificatePemFile = configuration.CertificatePemFile;
+            else
+            {
+                _certificatePemFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                                                   configuration.CertificatePemFile);
+            }
         }
 
         public void Start()
@@ -40,12 +48,16 @@ namespace Builderdash
         private ServiceHost GetServiceHost(ServerMode serverMode)
         {
             ServiceHost serviceHost = new ServiceHost(new JobServiceService(), _uri);
-            NetTcpBinding binding = serverMode == ServerMode.Secure
-                                        ? GetSecureBinding()
-                                        : GetBinding();
 
-            SetCertificateOptions(serviceHost);
-
+            NetTcpBinding binding;
+            if(serverMode == ServerMode.Secure)
+            {
+                binding = GetSecureBinding();
+                SetCertificateOptions(serviceHost);
+            }
+            else
+                binding = GetBinding();
+            
             serviceHost.AddServiceEndpoint(typeof(IJobService), binding, "master");
             serviceHost.AddServiceEndpoint(typeof(ITest2), binding, "authreq");
 
@@ -64,6 +76,14 @@ namespace Builderdash
 
         private void SetCertificateOptions(ServiceHost serviceHost)
         {
+            Trace.Information("Loading certificate from {0}", _certificatePemFile);
+
+            if(!File.Exists(_certificatePemFile))
+            {
+                Trace.Critical("Unable to load server certificate from '{0}'.", _certificatePemFile);
+                throw new FileNotFoundException("The server certificate could not be found.", _certificatePemFile);
+            }
+            
             X509Certificate2 certificate = new X509Certificate2().
                 LoadFromPemFile(_certificatePemFile);
 

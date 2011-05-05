@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<master mode="secure"
+        xmlns="http://tempuri.org/master.xsd"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="master.xsd">
+  <listen address="127.0.0.1" port="6666" />
+</master>

@@ -3,12 +3,12 @@ using System.Configuration;
 
 namespace Builderdash.Configuration
 {
-    public class MasterConfiguration : ConfigurationSection
+    public class ClientConfiguration : ConfigurationSection
     {
-        private static readonly MasterConfiguration ConfigSection = 
-            ConfigurationManager.GetSection("master") as MasterConfiguration;
-        
-        public MasterConfiguration()
+        private static readonly ClientConfiguration ConfigSection
+            = ConfigurationManager.GetSection("master") as ClientConfiguration;
+
+        public ClientConfiguration()
         {
             Mode = ServerMode.Secure;
         }
@@ -26,7 +26,7 @@ namespace Builderdash.Configuration
             }
         }
 
-        [ConfigurationProperty("certificatePemFile", DefaultValue = "cert.pem")]
+        [ConfigurationProperty("certificatePemFile")]
         public string CertificatePemFile
         {
             get
@@ -52,10 +52,10 @@ namespace Builderdash.Configuration
                 return true;
             }
             
-            return true;
+            return false;
         }
 
-        public static MasterConfiguration Configuration
+        public static ClientConfiguration Configuration
         {
             get
             {

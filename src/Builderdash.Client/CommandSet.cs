@@ -9,7 +9,7 @@ namespace Builderdash.Client
         [Command]
         public void CreateJob()
         {
-            var proxy = new MyClient().GetProxy();
+            var proxy = new ClientProxy().GetProxy();
             var result = proxy.RunJob();
             
             Trace.WriteLine("Job result: " + result);
@@ -18,7 +18,7 @@ namespace Builderdash.Client
         [Command]
         public void GetJobStatus(Guid jobId)
         {
-            var proxy = new MyClient().GetProxy();
+            var proxy = new ClientProxy().GetProxy();
             var result = proxy.GetJob(jobId).Result;
             
             Trace.WriteLine("Job result: " + result);

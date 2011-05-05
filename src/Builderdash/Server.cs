@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Security;
 using Builderdash.Configuration;
+using Synoptic;
 using Synoptic.Service;
 using WcfShared;
 using X509Library;
@@ -15,7 +16,7 @@ namespace Builderdash
     {
         private readonly ServerMode _serverMode;
         private readonly Uri _uri;
-        private readonly static TraceSource Trace = new TraceSource("bd.master.server");
+        private readonly static TraceSource Trace = new TraceSource("Builderdash");
         private readonly string _certificatePemFile;
         private ServiceHost _serviceHost;
 

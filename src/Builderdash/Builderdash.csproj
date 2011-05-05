@@ -68,7 +68,6 @@
     <Compile Include="Server.cs" />
     <Compile Include="ServiceUpdater.cs" />
     <Compile Include="JobServiceService.cs" />
-    <Compile Include="TracerExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

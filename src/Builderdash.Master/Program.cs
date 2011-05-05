@@ -16,7 +16,7 @@ namespace Builderdash.Master
             Trace.Listeners.Add(new TextWriterTraceListener(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "au.log")));
             Trace.AutoFlush = true;
 
-            Console.WriteLine(MasterConfiguration.Configuration.Server.Address);
+            Console.WriteLine(MasterConfiguration.Configuration.Mode);
 
             try
             {

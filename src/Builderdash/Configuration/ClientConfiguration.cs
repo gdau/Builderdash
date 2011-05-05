@@ -26,7 +26,7 @@ namespace Builderdash.Configuration
             }
         }
 
-        [ConfigurationProperty("certificatePemFile")]
+        [ConfigurationProperty("certificatePemFile", DefaultValue = "cert.crt")]
         public string CertificatePemFile
         {
             get
@@ -52,7 +52,7 @@ namespace Builderdash.Configuration
                 return true;
             }
             
-            return false;
+            return true;
         }
 
         public static ClientConfiguration Configuration

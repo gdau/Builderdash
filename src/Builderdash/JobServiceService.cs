@@ -9,9 +9,9 @@ using WcfShared;
 namespace Builderdash
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class JobServiceService : IJobService, ITest2
+    public class JobServiceService : IJobService, IAuthenticationRequest
     {
-        public string GetCert(string input)
+        public string RequestCertificate(string commonName)
         {
             return File.ReadAllText(@"c:\\castore\cn2.pem");
         }

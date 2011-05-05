@@ -26,7 +26,7 @@ namespace Builderdash.Configuration
             }
         }
 
-        [ConfigurationProperty("certificatePemFile", DefaultValue = "cert.pem")]
+        [ConfigurationProperty("certificatePemFile", DefaultValue = "cert.crt")]
         public string CertificatePemFile
         {
             get

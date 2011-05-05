@@ -15,9 +15,10 @@ namespace Builderdash
 {
     public class MasterServer : IDaemon
     {
+        private readonly static TraceSource Trace = new TraceSource("Builderdash");
+
         private readonly ServerMode _serverMode;
         private readonly Uri _uri;
-        private readonly static TraceSource Trace = new TraceSource("Builderdash");
         private readonly string _certificatePemFile;
         private ServiceHost _serviceHost;
 
@@ -37,12 +38,19 @@ namespace Builderdash
 
         public void Start()
         {
-            Console.Title = "bd.master.server";
-
             _serviceHost = GetServiceHost(_serverMode);
             _serviceHost.Open();
 
             Trace.Information("Accepting requests in {0} mode on {1}", _serverMode.ToString().ToLower(), _uri);
+        }
+
+        public void Stop()
+        {
+            if(_serviceHost != null && 
+               _serviceHost.State == CommunicationState.Opened)
+                _serviceHost.Close();
+            
+            Trace.Information("Stopped");
         }
 
         private ServiceHost GetServiceHost(ServerMode serverMode)
@@ -59,9 +67,14 @@ namespace Builderdash
                 binding = GetBinding();
             
             serviceHost.AddServiceEndpoint(typeof(IJobService), binding, "master");
-            serviceHost.AddServiceEndpoint(typeof(ITest2), binding, "authreq");
+            serviceHost.AddServiceEndpoint(typeof(IAuthenticationRequest), binding, "authreq");
 
             return serviceHost;
+        }
+
+        private NetTcpBinding GetBinding()
+        {
+            return new NetTcpBinding(SecurityMode.None);
         }
 
         private NetTcpBinding GetSecureBinding()
@@ -88,26 +101,13 @@ namespace Builderdash
                 LoadFromPemFile(_certificatePemFile);
 
             serviceHost.Credentials.ServiceCertificate.Certificate = certificate;
+
             serviceHost.Credentials.ClientCertificate.Authentication.CertificateValidationMode =
                 X509CertificateValidationMode.Custom;
             serviceHost.Credentials.ClientCertificate.Authentication.CustomCertificateValidator =
                 new ServerX509CertificateValidator();
             serviceHost.Credentials.ClientCertificate.Authentication.RevocationMode =
                 X509RevocationMode.NoCheck;
-        }
-
-        private static NetTcpBinding GetBinding()
-        {
-            return new NetTcpBinding(SecurityMode.None);
-        }
-
-        public void Stop()
-        {
-            if(_serviceHost != null && 
-                _serviceHost.State == CommunicationState.Opened)
-            _serviceHost.Close();
-            
-            Trace.Information("Stopped");
         }
     }
 }

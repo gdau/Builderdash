@@ -7,13 +7,15 @@ namespace Builderdash.Client
 {
     public class CommandSet
     {
+        private readonly static TraceSource Trace = new TraceSource("Builderdash");
+
         [Command]
         public void CreateJob()
         {
             var proxy = GetProxy();
             var result = proxy.RunJob();
             
-            Trace.WriteLine("Job result: " + result);
+            Trace.Information("Job result: " + result);
         }        
         
         [Command]
@@ -21,13 +23,13 @@ namespace Builderdash.Client
         {
             var proxy = GetProxy();
             var result = proxy.GetJob(jobId).Result;
-            
-            Trace.WriteLine("Job result: " + result);
+
+            Trace.Information("Job result: " + result);
         }
 
         private IJobService GetProxy()
         {
-            return new ClientProxyFactory(ClientConfiguration.Configuration).GetProxy();
+            return new JobServiceProxy(ClientConfiguration.Configuration).GetService();
         }
     }
 }

@@ -50,23 +50,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthenticationRequestProxy.cs" />
     <Compile Include="CallbackImpl.cs" />
     <Compile Include="Configuration\ClientConfiguration.cs" />
     <Compile Include="Configuration\MasterConfiguration.cs" />
     <Compile Include="Configuration\ServerConfigurationElement.cs" />
     <Compile Include="Configuration\ServerMode.cs" />
-    <Compile Include="ClientProxy.cs" />
+    <Compile Include="JobServiceProxy.cs" />
     <Compile Include="ServerX509CertificateValidator.cs" />
     <Compile Include="IDataOutputCallback.cs" />
     <Compile Include="IJobService.cs" />
-    <Compile Include="ITest2.cs" />
+    <Compile Include="IAuthenticationRequest.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="Jobber.cs" />
     <Compile Include="JobStatus.cs" />
     <Compile Include="JobStatusEventArgs.cs" />
     <Compile Include="LoadFromPEMFileClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server.cs" />
+    <Compile Include="MasterServer.cs" />
     <Compile Include="ServiceUpdater.cs" />
     <Compile Include="JobServiceService.cs" />
   </ItemGroup>

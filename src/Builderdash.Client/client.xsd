@@ -2,7 +2,7 @@
 <xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
            attributeFormDefault="unqualified" 
            elementFormDefault="qualified" 
-           targetNamespace="http://tempuri.org/master.xsd" 
+           targetNamespace="http://tempuri.org/client.xsd" 
            xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="client">
     <xs:complexType>
@@ -11,6 +11,7 @@
           <xs:complexType>
             <xs:attribute name="address" type="xs:string" use="required" />
             <xs:attribute name="port" type="xs:unsignedShort" use="required" />
+            <xs:attribute name="commonName" use="optional"/>
           </xs:complexType>
         </xs:element>
       </xs:sequence>

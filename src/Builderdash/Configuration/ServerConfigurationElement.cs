@@ -30,5 +30,18 @@ namespace Builderdash.Configuration
                 this["port"] = value;
             }
         }
+
+        [ConfigurationProperty("commonName")]
+        public string CommonName
+        {
+            get
+            {
+                return (string)this["commonName"];
+            }
+            set
+            {
+                this["commonName"] = value;
+            }
+        }
     }
 }

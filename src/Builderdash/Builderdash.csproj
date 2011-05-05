@@ -40,6 +40,7 @@
       <HintPath>..\..\lib\synoptic\Synoptic.Service.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.ServiceModel" />
@@ -50,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CallbackImpl.cs" />
+    <Compile Include="Configuration\ServerConfigurationElement.cs" />
     <Compile Include="MyClient.cs" />
     <Compile Include="ServerX509CertificateValidator.cs" />
     <Compile Include="IDataOutputCallback.cs" />

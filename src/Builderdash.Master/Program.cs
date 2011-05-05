@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
+using Builderdash.Master.Configuration;
 using Synoptic;
 
 namespace Builderdash.Master
@@ -12,6 +15,8 @@ namespace Builderdash.Master
             Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
             Trace.Listeners.Add(new TextWriterTraceListener(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "au.log")));
             Trace.AutoFlush = true;
+
+            Console.WriteLine(MasterConfiguration.Configuration.Server.Address);
 
             try
             {

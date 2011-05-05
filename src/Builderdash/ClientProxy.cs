@@ -5,14 +5,15 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 using System.Threading;
+using Builderdash.Configuration;
 using WcfShared;
 using X509Library;
 
 namespace Builderdash
 {
-    public class ClientProxy
+    public class ClientProxyFactory
     {
-        public ClientProxy()
+        public ClientProxyFactory(ClientConfiguration configuration)
         {
             
         }

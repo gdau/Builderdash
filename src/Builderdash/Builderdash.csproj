@@ -55,7 +55,7 @@
     <Compile Include="Configuration\MasterConfiguration.cs" />
     <Compile Include="Configuration\ServerConfigurationElement.cs" />
     <Compile Include="Configuration\ServerMode.cs" />
-    <Compile Include="MyClient.cs" />
+    <Compile Include="ClientProxy.cs" />
     <Compile Include="ServerX509CertificateValidator.cs" />
     <Compile Include="IDataOutputCallback.cs" />
     <Compile Include="IJobService.cs" />

@@ -6,23 +6,23 @@ namespace Builderdash.Configuration
     public class ClientConfiguration : ConfigurationSection
     {
         private static readonly ClientConfiguration ConfigSection
-            = ConfigurationManager.GetSection("master") as ClientConfiguration;
+            = ConfigurationManager.GetSection("client") as ClientConfiguration;
 
         public ClientConfiguration()
         {
             Mode = ServerMode.Secure;
         }
 
-        [ConfigurationProperty("listen")]
-        public ServerConfigurationElement Server
+        [ConfigurationProperty("master")]
+        public ServerConfigurationElement MasterServer
         {
             get
             {
-                return (ServerConfigurationElement)this["listen"];
+                return (ServerConfigurationElement)this["master"];
             }
             set
             {
-                this["listen"] = value;
+                this["master"] = value;
             }
         }
 

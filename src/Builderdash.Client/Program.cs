@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Builderdash.Configuration;
 using Synoptic;
 
 namespace Builderdash.Client

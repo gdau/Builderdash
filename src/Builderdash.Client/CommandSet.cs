@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Builderdash.Configuration;
 using Synoptic;
 
 namespace Builderdash.Client
@@ -9,7 +10,7 @@ namespace Builderdash.Client
         [Command]
         public void CreateJob()
         {
-            var proxy = new ClientProxy().GetProxy();
+            var proxy = GetProxy();
             var result = proxy.RunJob();
             
             Trace.WriteLine("Job result: " + result);
@@ -18,10 +19,15 @@ namespace Builderdash.Client
         [Command]
         public void GetJobStatus(Guid jobId)
         {
-            var proxy = new ClientProxy().GetProxy();
+            var proxy = GetProxy();
             var result = proxy.GetJob(jobId).Result;
             
             Trace.WriteLine("Job result: " + result);
+        }
+
+        private IJobService GetProxy()
+        {
+            return new ClientProxyFactory(ClientConfiguration.Configuration).GetProxy();
         }
     }
 }

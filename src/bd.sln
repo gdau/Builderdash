@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Builderdash.Agent", "Builde
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Builderdash.Client", "Builderdash.Client\Builderdash.Client.csproj", "{5A53DD0B-686A-42CE-8090-8002680E7A8C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{514E9924-AADF-4566-8A66-C0D3F8860CAB}"
+	ProjectSection(SolutionItems) = preProject
+		trace.config = trace.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -1,28 +1,34 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IdentityModel.Selectors;
 using System.Security.Cryptography.X509Certificates;
+using Synoptic;
 using X509Library;
 
 namespace Builderdash
 {
     public class ServerX509CertificateValidator : X509CertificateValidator
     {
-        public override void Validate(X509Certificate2 certificate)
+        private readonly X509Certificate2 _caCertificate;
+        private readonly static TraceSource Trace = new TraceSource("Builderdash");
+
+        public ServerX509CertificateValidator(X509Certificate2 caCertificate)
         {
-            //return;
-            var ca = new X509Certificate2().LoadFromPemFile("ca.crt");
+            _caCertificate = caCertificate;
+        }
+
+        public override void Validate( X509Certificate2 certificate)
+        {
+            Trace.Information("Validating certificate");
             var x509ChainPolicy = new X509ChainPolicy
                                       {
                                           RevocationMode = X509RevocationMode.NoCheck
                                       };
-                                          ;
+            
             x509ChainPolicy.VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority;
-            x509ChainPolicy.ExtraStore.Add(ca);
-            //x509ChainPolicy.
+            x509ChainPolicy.ExtraStore.Add(_caCertificate);
 
             CreateChainTrustValidator(false, x509ChainPolicy).Validate(certificate);
-            Console.WriteLine("Validate called...");
-            //return true;
         }
     }
 }

@@ -20,9 +20,13 @@ namespace Builderdash
         private readonly Uri _uri;
         private readonly string _certificatePemFile;
         private ServiceHost _serviceHost;
+        private readonly X509Certificate2 _caCertificate;
 
         public MasterServer(ServerConfiguration configuration)
         {
+            // TODO:config.
+            _caCertificate = new X509Certificate2().LoadFromPemFile("ca.crt");
+
             _serverMode = configuration.Mode;
             _uri = new UriBuilder("net.tcp", configuration.Address, configuration.Port).Uri;
             
@@ -104,7 +108,7 @@ namespace Builderdash
             serviceHost.Credentials.ClientCertificate.Authentication.CertificateValidationMode =
                 X509CertificateValidationMode.Custom;
             serviceHost.Credentials.ClientCertificate.Authentication.CustomCertificateValidator =
-                new ServerX509CertificateValidator();
+                new ServerX509CertificateValidator(_caCertificate);
             serviceHost.Credentials.ClientCertificate.Authentication.RevocationMode =
                 X509RevocationMode.NoCheck;
         }

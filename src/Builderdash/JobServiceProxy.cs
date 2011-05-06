@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IdentityModel.Selectors;
 using System.IO;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
@@ -8,8 +7,6 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 using Builderdash.Configuration;
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Security;
 using Synoptic;
 using X509Library;
 
@@ -23,9 +20,13 @@ namespace Builderdash
         private readonly Uri _uri;
         private readonly string _certificatePemFile;
         private readonly string _masterCommonName;
+        private X509Certificate2 _caCertificate;
 
         public JobServiceProxy(ServerConfiguration configuration)
         {
+            // TODO:config.
+            _caCertificate = new X509Certificate2().LoadFromPemFile("ca.crt");
+
             _serverMode = configuration.Mode;
             _uri = new UriBuilder("net.tcp", configuration.Address, configuration.Port, "master").Uri;
             _masterCommonName = configuration.CommonName;
@@ -73,10 +74,7 @@ namespace Builderdash
                     X509CertificateValidationMode.Custom;
                 
                 factory.Credentials.ServiceCertificate.Authentication.CustomCertificateValidator =
-                    new ServerX509CertificateValidator();
-
-//                factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode =
-//                    X509CertificateValidationMode.ChainTrust;
+                    new ServerX509CertificateValidator(_caCertificate);
 
                 factory.Credentials.ServiceCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
 

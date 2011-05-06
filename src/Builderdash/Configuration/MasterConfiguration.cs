@@ -8,17 +8,12 @@ namespace Builderdash.Configuration
         private static readonly MasterConfiguration ConfigSection = 
             ConfigurationManager.GetSection("master") as MasterConfiguration;
         
-        public MasterConfiguration()
-        {
-            Mode = ServerMode.Secure;
-        }
-
         [ConfigurationProperty("listen")]
-        public ServerConfigurationElement Server
+        public ServerConfiguration Server
         {
             get
             {
-                return (ServerConfigurationElement)this["listen"];
+                return (ServerConfiguration)this["listen"];
             }
             set
             {
@@ -37,22 +32,6 @@ namespace Builderdash.Configuration
             {
                 this["certificatePemFile"] = value;
             }
-        }
-
-        public ServerMode Mode
-        {
-            get; set;
-        }
-
-        protected override bool OnDeserializeUnrecognizedAttribute(string name, string value)
-        {
-            if(name.Equals("mode"))
-            {
-                Mode = (ServerMode)Enum.Parse(typeof(ServerMode), value, true);
-                return true;
-            }
-            
-            return true;
         }
 
         public static MasterConfiguration Configuration

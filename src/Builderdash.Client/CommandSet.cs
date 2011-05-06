@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using Builderdash.Configuration;
 using Synoptic;
 
@@ -29,7 +30,7 @@ namespace Builderdash.Client
 
         private IJobService GetProxy()
         {
-            return new JobServiceProxy(ClientConfiguration.Configuration).GetService();
+            return new JobServiceProxy(ClientConfiguration.Configuration.DefaultServer).GetService();
         }
     }
 }

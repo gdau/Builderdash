@@ -58,7 +58,8 @@
     <Compile Include="CallbackImpl.cs" />
     <Compile Include="Configuration\ClientConfiguration.cs" />
     <Compile Include="Configuration\MasterConfiguration.cs" />
-    <Compile Include="Configuration\ServerConfigurationElement.cs" />
+    <Compile Include="Configuration\ServerConfiguration.cs" />
+    <Compile Include="Configuration\ServerConfigurationCollection.cs" />
     <Compile Include="Configuration\ServerMode.cs" />
     <Compile Include="JobServiceProxy.cs" />
     <Compile Include="ServerX509CertificateValidator.cs" />

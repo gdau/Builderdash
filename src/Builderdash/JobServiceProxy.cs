@@ -19,13 +19,13 @@ namespace Builderdash
         private readonly ServerMode _serverMode;
         private readonly Uri _uri;
         private readonly string _certificatePemFile;
-        private string _masterCommonName;
+        private readonly string _masterCommonName;
 
-        public JobServiceProxy(ClientConfiguration configuration)
+        public JobServiceProxy(ServerConfiguration configuration)
         {
             _serverMode = configuration.Mode;
-            _uri = new UriBuilder("net.tcp", configuration.MasterServer.Address, configuration.MasterServer.Port, "master").Uri;
-            _masterCommonName = configuration.MasterServer.CommonName;
+            _uri = new UriBuilder("net.tcp", configuration.Address, configuration.Port, "master").Uri;
+            _masterCommonName = configuration.CommonName;
 
             if (Path.IsPathRooted(configuration.CertificatePemFile))
                 _certificatePemFile = configuration.CertificatePemFile;

@@ -7,7 +7,7 @@ namespace Builderdash.Client
     class Program
     {
         private readonly static TraceSource Trace = new TraceSource("Builderdash");
-
+        
         static void Main(string[] args)
         {
             try

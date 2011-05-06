@@ -15,10 +15,10 @@ namespace Builderdash
         private readonly ServerMode _serverMode;
         private readonly Uri _uri;
 
-        public AuthenticationRequestProxy(ClientConfiguration configuration)
+        public AuthenticationRequestProxy(ServerConfiguration configuration)
         {
             _serverMode = configuration.Mode;
-            _uri = new UriBuilder("net.tcp", configuration.MasterServer.Address, configuration.MasterServer.Port, "authreq").Uri;
+            _uri = new UriBuilder("net.tcp", configuration.Address, configuration.Port, "authreq").Uri;
         }
 
         public IAuthenticationRequest GetService()

@@ -8,7 +8,6 @@ using System.ServiceModel.Security;
 using Builderdash.Configuration;
 using Synoptic;
 using Synoptic.Service;
-using WcfShared;
 using X509Library;
 
 namespace Builderdash
@@ -22,10 +21,10 @@ namespace Builderdash
         private readonly string _certificatePemFile;
         private ServiceHost _serviceHost;
 
-        public MasterServer(MasterConfiguration configuration)
+        public MasterServer(ServerConfiguration configuration)
         {
             _serverMode = configuration.Mode;
-            _uri = new UriBuilder("net.tcp", configuration.Server.Address, configuration.Server.Port).Uri;
+            _uri = new UriBuilder("net.tcp", configuration.Address, configuration.Port).Uri;
             
             if (Path.IsPathRooted(configuration.CertificatePemFile))
                 _certificatePemFile = configuration.CertificatePemFile;

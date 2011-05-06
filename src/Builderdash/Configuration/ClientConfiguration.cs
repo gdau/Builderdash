@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Linq;
 
 namespace Builderdash.Configuration
 {
@@ -8,50 +9,28 @@ namespace Builderdash.Configuration
         private static readonly ClientConfiguration ConfigSection
             = ConfigurationManager.GetSection("client") as ClientConfiguration;
 
-        public ClientConfiguration()
+        [ConfigurationProperty("", IsDefaultCollection = true, IsKey = false)]
+        public ServerConfigurationCollection MasterServers
         {
-            Mode = ServerMode.Secure;
+            get { return (ServerConfigurationCollection)base[""]; }
+            set { base[""] = value; }  
         }
-
-        [ConfigurationProperty("master")]
-        public ServerConfigurationElement MasterServer
+        
+        [ConfigurationProperty("masterName")]
+        public string MasterName
         {
             get
             {
-                return (ServerConfigurationElement)this["master"];
+                return (string)this["masterName"];
             }
             set
             {
-                this["master"] = value;
+                this["masterName"] = value;
             }
-        }
-
-        [ConfigurationProperty("certificatePemFile", DefaultValue = "cert.crt")]
-        public string CertificatePemFile
-        {
-            get
-            {
-                return (string)this["certificatePemFile"];
-            }
-            set
-            {
-                this["certificatePemFile"] = value;
-            }
-        }
-
-        public ServerMode Mode
-        {
-            get; set;
         }
 
         protected override bool OnDeserializeUnrecognizedAttribute(string name, string value)
         {
-            if(name.Equals("mode"))
-            {
-                Mode = (ServerMode)Enum.Parse(typeof(ServerMode), value, true);
-                return true;
-            }
-            
             return true;
         }
 
@@ -60,6 +39,20 @@ namespace Builderdash.Configuration
             get
             {
                 return ConfigSection;
+            }
+        }
+
+        public ServerConfiguration DefaultServer
+        {
+            get
+            {
+                foreach(ServerConfiguration server in MasterServers)
+                {
+                    if (server.Name.Equals(MasterName))
+                        return server;
+                }
+
+                return MasterServers.First();
             }
         }
     }

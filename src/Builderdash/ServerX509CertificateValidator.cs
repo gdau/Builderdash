@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IdentityModel.Selectors;
 using System.Security.Cryptography.X509Certificates;
 using Synoptic;
-using X509Library;
 
 namespace Builderdash
 {

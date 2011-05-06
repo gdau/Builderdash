@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace WcfShared
+namespace Builderdash
 {
     public class Job
     {
-        private object _guard = new object();
+        private readonly object _guard = new object();
 
         public Guid Id { get; set; }
 

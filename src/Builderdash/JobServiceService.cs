@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading;
-using WcfShared;
 
 namespace Builderdash
 {

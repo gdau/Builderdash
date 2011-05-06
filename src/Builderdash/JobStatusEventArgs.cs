@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WcfShared
+namespace Builderdash
 {
     public class JobStatusEventArgs : EventArgs
     {

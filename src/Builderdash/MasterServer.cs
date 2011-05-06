@@ -8,7 +8,6 @@ using System.ServiceModel.Security;
 using Builderdash.Configuration;
 using Synoptic;
 using Synoptic.Service;
-using X509Library;
 
 namespace Builderdash
 {

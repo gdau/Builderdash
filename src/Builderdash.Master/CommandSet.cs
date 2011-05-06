@@ -11,7 +11,6 @@ using Builderdash.Configuration;
 using Builderdash.X509;
 using Synoptic;
 using Synoptic.Service;
-using WcfShared;
 
 namespace Builderdash.Master
 {

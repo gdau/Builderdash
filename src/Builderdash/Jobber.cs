@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace WcfShared
+namespace Builderdash
 {
     public class Jobber
     {
@@ -40,7 +40,7 @@ namespace WcfShared
             return _jobs.Count;
         }
 
-        public int RunnigCount()
+        public int RunningCount()
         {
             return _jobs.Values.Where(j => j.Started && !j.Complete).Count();
         }

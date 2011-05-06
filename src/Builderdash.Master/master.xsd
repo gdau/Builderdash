@@ -1,19 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           attributeFormDefault="unqualified" 
-           elementFormDefault="qualified" 
-           targetNamespace="http://tempuri.org/master.xsd" 
-           xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:element name="master">
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+attributeFormDefault="unqualified"
+elementFormDefault="unqualified"
+targetNamespace="http://tempuri.org/master.xsd"
+xmlns:c="http://tempuri.org/master.xsd"
+xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="listen">
     <xs:complexType>
-      <xs:sequence>
-        <xs:element name="listen">
-          <xs:complexType>
-            <xs:attribute name="address" type="xs:string" use="required" />
-            <xs:attribute name="port" type="xs:unsignedShort" use="required" />
-          </xs:complexType>
-        </xs:element>
-      </xs:sequence>
+      <xs:attribute name="name" type="xs:string" use="required" />
+      <xs:attribute name="address" type="xs:string" use="required" />
+      <xs:attribute name="port" type="xs:unsignedShort" use="required" />
+      <xs:attribute name="commonName" use="optional"/>
       <xs:attribute name="mode" use="required">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -24,5 +22,20 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
+
+  <xs:element name="master">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="c:listen" minOccurs="1" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:key name="nameKey">
+      <xs:selector xpath="c:master"/>
+      <xs:field xpath="@name"/>
+    </xs:key>
+
+  </xs:element>
+
 </xs:schema>
 

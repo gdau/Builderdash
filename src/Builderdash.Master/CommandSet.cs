@@ -38,7 +38,7 @@ namespace Builderdash.Master
 //                                                });
 
 
-            _comboDaemon = new ComboDaemon();//nxxxew MasterServer(MasterConfiguration.Configuration));
+            _comboDaemon = new ComboDaemon(new MasterServer(MasterConfiguration.Configuration.MasterServers.First()));
         }
 
         [Command]

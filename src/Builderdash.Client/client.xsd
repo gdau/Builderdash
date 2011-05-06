@@ -28,13 +28,7 @@
         <xs:sequence>
           <xs:element ref="c:master" minOccurs="1" maxOccurs="unbounded"/>
         </xs:sequence>
-        <xs:attribute name="masterName" use="required"/>
       </xs:complexType>
-
-      <xs:keyref name="nameRef" refer="c:nameKey">
-        <xs:selector xpath="."/>
-        <xs:field xpath="@masterName"/>
-      </xs:keyref>
 
       <xs:key name="nameKey">
         <xs:selector xpath="c:master"/>

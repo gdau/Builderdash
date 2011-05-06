@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Linq;
 
 namespace Builderdash.Configuration
 {
@@ -8,30 +9,16 @@ namespace Builderdash.Configuration
         private static readonly MasterConfiguration ConfigSection = 
             ConfigurationManager.GetSection("master") as MasterConfiguration;
         
-        [ConfigurationProperty("listen")]
-        public ServerConfiguration Server
+        protected override bool OnDeserializeUnrecognizedAttribute(string name, string value)
         {
-            get
-            {
-                return (ServerConfiguration)this["listen"];
-            }
-            set
-            {
-                this["listen"] = value;
-            }
+            return true;
         }
 
-        [ConfigurationProperty("certificatePemFile", DefaultValue = "cert.crt")]
-        public string CertificatePemFile
+        [ConfigurationProperty("", IsDefaultCollection = true, IsKey = false)]
+        public MasterServerConfigurationCollection MasterServers
         {
-            get
-            {
-                return (string)this["certificatePemFile"];
-            }
-            set
-            {
-                this["certificatePemFile"] = value;
-            }
+            get { return (MasterServerConfigurationCollection)base[""]; }
+            set { base[""] = value; }
         }
 
         public static MasterConfiguration Configuration
@@ -40,6 +27,11 @@ namespace Builderdash.Configuration
             {
                 return ConfigSection;
             }
+        }
+
+        public ServerConfiguration GetMasterServer(string name)
+        {
+            return MasterServers.FirstOrDefault(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

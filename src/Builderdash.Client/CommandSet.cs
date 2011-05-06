@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using Builderdash.Configuration;
 using Synoptic;
 
@@ -11,26 +10,31 @@ namespace Builderdash.Client
         private readonly static TraceSource Trace = new TraceSource("Builderdash");
 
         [Command]
-        public void CreateJob()
+        public void CreateJob(string masterName)
         {
-            var proxy = GetProxy();
+
+            var proxy = GetProxy(masterName);
             var result = proxy.RunJob();
             
             Trace.Information("Job result: " + result);
         }        
         
         [Command]
-        public void GetJobStatus(Guid jobId)
+        public void GetJobStatus(Guid jobId, string masterName)
         {
-            var proxy = GetProxy();
+            var proxy = GetProxy(masterName);
             var result = proxy.GetJob(jobId).Result;
 
             Trace.Information("Job result: " + result);
         }
 
-        private IJobService GetProxy()
+        private IJobService GetProxy(string masterName)
         {
-            return new JobServiceProxy(ClientConfiguration.Configuration.DefaultServer).GetService();
+            var server = ClientConfiguration.Configuration.GetMasterServer(masterName);
+            if(server == null)
+                throw new ArgumentException("Master server invalid.", "masterName");
+            
+            return new JobServiceProxy(server).GetService();
         }
     }
 }

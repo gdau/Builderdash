@@ -10,23 +10,10 @@ namespace Builderdash.Configuration
             = ConfigurationManager.GetSection("client") as ClientConfiguration;
 
         [ConfigurationProperty("", IsDefaultCollection = true, IsKey = false)]
-        public ServerConfigurationCollection MasterServers
+        public ClientServerConfigurationCollection MasterServers
         {
-            get { return (ServerConfigurationCollection)base[""]; }
-            set { base[""] = value; }  
-        }
-        
-        [ConfigurationProperty("masterName")]
-        public string MasterName
-        {
-            get
-            {
-                return (string)this["masterName"];
-            }
-            set
-            {
-                this["masterName"] = value;
-            }
+            get { return (ClientServerConfigurationCollection)base[""]; }
+            set { base[""] = value; }
         }
 
         protected override bool OnDeserializeUnrecognizedAttribute(string name, string value)
@@ -42,18 +29,9 @@ namespace Builderdash.Configuration
             }
         }
 
-        public ServerConfiguration DefaultServer
+        public ServerConfiguration GetMasterServer(string name)
         {
-            get
-            {
-                foreach(ServerConfiguration server in MasterServers)
-                {
-                    if (server.Name.Equals(MasterName))
-                        return server;
-                }
-
-                return MasterServers.First();
-            }
+            return MasterServers.FirstOrDefault(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

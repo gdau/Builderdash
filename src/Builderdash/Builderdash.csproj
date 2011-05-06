@@ -57,7 +57,9 @@
     <Compile Include="AuthenticationRequestProxy.cs" />
     <Compile Include="CallbackImpl.cs" />
     <Compile Include="Configuration\ClientConfiguration.cs" />
+    <Compile Include="Configuration\ClientServerConfigurationCollection.cs" />
     <Compile Include="Configuration\MasterConfiguration.cs" />
+    <Compile Include="Configuration\MasterServerConfigurationCollection.cs" />
     <Compile Include="Configuration\ServerConfiguration.cs" />
     <Compile Include="Configuration\ServerConfigurationCollection.cs" />
     <Compile Include="Configuration\ServerMode.cs" />

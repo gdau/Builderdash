@@ -5,14 +5,14 @@ using System.Configuration;
 namespace Builderdash.Configuration
 {
     [ConfigurationCollection(typeof(ServerConfiguration), CollectionType = ConfigurationElementCollectionType.BasicMapAlternate)]
-    public class ServerConfigurationCollection : ConfigurationElementCollection, IEnumerable<ServerConfiguration>
+    public abstract class ServerConfigurationCollectionBase : ConfigurationElementCollection, IEnumerable<ServerConfiguration>
     {
-        private const string PropertyName = "master";
-
         public override ConfigurationElementCollectionType CollectionType
         {
             get { return ConfigurationElementCollectionType.BasicMapAlternate; }
         }  
+
+        protected abstract string PropertyName { get; }
 
         protected override string ElementName
         {

@@ -75,6 +75,7 @@
     <Compile Include="LoadFromPEMFileClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MasterServer.cs" />
+    <Compile Include="ServiceClientWrapper.cs" />
     <Compile Include="ServiceUpdater.cs" />
     <Compile Include="JobServiceService.cs" />
     <Compile Include="Utils.cs" />

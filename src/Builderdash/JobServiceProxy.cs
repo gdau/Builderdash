@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IdentityModel.Selectors;
 using System.IO;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Security;
 using Builderdash.Configuration;
 using Synoptic;
 
@@ -29,61 +29,51 @@ namespace Builderdash
             _serverMode = configuration.Mode;
             _uri = new UriBuilder("net.tcp", configuration.Address, configuration.Port, "master").Uri;
             _masterCommonName = configuration.CommonName;
-
-            if (Path.IsPathRooted(configuration.CertificatePemFile))
-                _certificatePemFile = configuration.CertificatePemFile;
-            else
-            {
-                _certificatePemFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                                                   configuration.CertificatePemFile);
-            }
+            
+            _certificatePemFile = configuration.CertificatePemFile;
         }
 
-        public IJobService GetService()
+        public ServiceClientWrapper<IJobService> GetService()
         {
             NetTcpBinding binding;
-            EndpointAddress addr;
+            EndpointAddress remoteAddress;
+            X509Certificate2 clientCertificate = null;
+            X509CertificateValidator certificateValidator = null;
 
             if (_serverMode == ServerMode.Secure)
             {
                 binding = GetSecureBinding();
-                addr = new EndpointAddress(_uri,
+                remoteAddress = new EndpointAddress(_uri,
                                            EndpointIdentity.CreateDnsIdentity(_masterCommonName),
                                            (AddressHeaderCollection)null);
+                
+                clientCertificate = LoadFromFile();
+                certificateValidator = new ServerX509CertificateValidator(_caCertificate);
             }
             else
             {
                 binding = GetBinding();
-                addr = new EndpointAddress(_uri);
+                remoteAddress = new EndpointAddress(_uri);
             }
 
-            ChannelFactory<IJobService> factory = new DuplexChannelFactory<IJobService>(new CallbackImpl(), binding, addr);
+            return new ServiceClientWrapper<IJobService>(binding, 
+                    remoteAddress, 
+                    new CallbackImpl(), 
+                    certificateValidator, 
+                    clientCertificate);
+        }
 
-            if (_serverMode == ServerMode.Secure)
+        private X509Certificate2 LoadFromFile()
+        {
+            Trace.Information("Loading certificate from {0}", _certificatePemFile);
+
+            if (!File.Exists(_certificatePemFile))
             {
-                Trace.Information("Loading certificate from {0}", _certificatePemFile);
-
-                if (!File.Exists(_certificatePemFile))
-                {
-                    Trace.Critical("Unable to load server certificate from '{0}'.", _certificatePemFile);
-                    throw new FileNotFoundException("The server certificate could not be found.", _certificatePemFile);
-                }
-
-                factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode =
-                    X509CertificateValidationMode.Custom;
-                
-                factory.Credentials.ServiceCertificate.Authentication.CustomCertificateValidator =
-                    new ServerX509CertificateValidator(_caCertificate);
-
-                factory.Credentials.ServiceCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
-
-                X509Certificate2 cert = new X509Certificate2();
-                cert.LoadFromPemFile(_certificatePemFile);
-
-                factory.Credentials.ClientCertificate.Certificate = cert;
+                Trace.Critical("Unable to load server certificate from '{0}'.", _certificatePemFile);
+                throw new FileNotFoundException("The server certificate could not be found.", _certificatePemFile);
             }
-
-            return factory.CreateChannel();
+            
+            return new X509Certificate2().LoadFromPemFile(_certificatePemFile);
         }
 
         private NetTcpBinding GetSecureBinding()

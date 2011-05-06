@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.ServiceModel;
 using Builderdash.Configuration;
 using Synoptic;
 
@@ -12,23 +13,23 @@ namespace Builderdash.Client
         [Command]
         public void CreateJob(string masterName)
         {
-
-            var proxy = GetProxy(masterName);
-            var result = proxy.RunJob();
-            
-            Trace.Information("Job result: " + result);
+            using(var proxy = GetProxy(masterName))
+            {
+                var result = proxy.Channel.RunJob();
+                Trace.Information("Job result: " + result);
+            }
         }        
         
         [Command]
         public void GetJobStatus(Guid jobId, string masterName)
         {
             var proxy = GetProxy(masterName);
-            var result = proxy.GetJob(jobId).Result;
+//            var result = proxy.GetJob(jobId).Result;
 
-            Trace.Information("Job result: " + result);
+//            Trace.Information("Job result: " + result);
         }
 
-        private IJobService GetProxy(string masterName)
+        private ServiceClientWrapper<IJobService> GetProxy(string masterName)
         {
             var server = ClientConfiguration.Configuration.GetMasterServer(masterName);
             if(server == null)

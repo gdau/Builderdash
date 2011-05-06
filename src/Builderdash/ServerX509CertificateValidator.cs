@@ -16,15 +16,15 @@ namespace Builderdash
             _caCertificate = caCertificate;
         }
 
-        public override void Validate( X509Certificate2 certificate)
+        public override void Validate(X509Certificate2 certificate)
         {
             Trace.Information("Validating certificate");
             var x509ChainPolicy = new X509ChainPolicy
                                       {
-                                          RevocationMode = X509RevocationMode.NoCheck
+                                          RevocationMode = X509RevocationMode.NoCheck,
+                                          VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority
                                       };
-            
-            x509ChainPolicy.VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority;
+
             x509ChainPolicy.ExtraStore.Add(_caCertificate);
 
             CreateChainTrustValidator(false, x509ChainPolicy).Validate(certificate);
